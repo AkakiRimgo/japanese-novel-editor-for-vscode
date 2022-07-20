@@ -10,15 +10,10 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:japanese-novel-editor.helloWorld"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
-			{
-				"command": "japanese-novel-editor.helloWorld",
-				"title": "Hello World"
-			}
 		]
 	},
 	"scripts": {

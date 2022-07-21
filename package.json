@@ -1,8 +1,9 @@
 {
-  "name": "japanese-novel-editor",
+	"publisher": "AkakiRimgo",
+  	"name": "japanese-novel-editor",
 	"displayName": "Japanese-novel-editor",
 	"description": "日本語で小説を書く。それもvscodeで。",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -17,11 +18,11 @@
 		"commands": [
 		],
 		"configuration":{
-			"title": "MyNovel",
+			"title": "Japanese_Novel_Editor",
 			"properties": {
 				"filenameConfig.tag":{
 					"type": "string",
-					"description": "このタグがついたファイルに適応される. もし'*'の場合前ファイルに適応される. ",
+					"description": "このタグがついたファイルに適応される. \n もし'*'の場合前ファイルに適応される. \n 例) タグが 'novel' の場合 './filename.novel' や 'filename.novel.txt' というファイル名に反応する. ",
 					"default": "novel"
 				}
 			}

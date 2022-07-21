@@ -1,70 +1,58 @@
 # japanese-novel-editor README
 
-This is the README for your extension "japanese-novel-editor". After writing up a brief description, we recommend including the following sections.
+このREADMEはjapanese-novel-editor（以下本拡張）のREADMEです。
+日本人向けを対象とする予定ですが、外国人でも使える方法を模索していきたいですね。
 
-## Features
+==  
+This is the README for japanese-novel-editor.
+We plan to target the Japanese market, but we would like to find a way to make it work for foreigners as well.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 各種機能　Features　
 
-For example if there is an image subfolder under your extension project workspace:
+機能としまして以下を予定しております。
 
-\!\[feature X\]\(images/feature-x.png\)
+- 文字数を数える（vsrsion0.1.0）
+- 設定ファイルに基づく主人公などの色分け
+- 鉤括弧文の色付け
+- 文法チェック
+- その他各種便利機能（意見あればください）
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+==  
+
+The following features are planned
+
+- Character counting (vsrsion0.1.0)
+- Color-coding of protagonists, etc. based on configuration files
+- Colorization of bracketed sentences
+- Grammar check
+- Other useful features (please give us your suggestions)
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+今のところとくにありませんが、強いていうなら他の文字数カウンターと見た目が被ります。
+There is nothing in particular at this point, but if I had to say, it looks like other character counters.
 
-## Extension Settings
+## 設定値 (Extension Settings)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+この拡張には現在以下の設定値があります：
 
-For example:
+* `filename Config: tag`: ファイル名で選別する際のタグの名前を設定できます。始めの値はnovelです。
 
-This extension contributes the following settings:
+## これからすること
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- 設定ファイルに基づく主人公などの色分け
+- 鉤括弧文の色付け
+- 文法チェック
+- その他各種便利機能（意見あればください）
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.1.0
 
-### 1.0.0
+文字数を数える機能を追加しました。
+本機能は、特定ファイルの文字数を数える機能です。
+特定ファイルとは、ファイル名に特定のタグ（設定で変更可能）がついたファイルです。
+たとえば、"novel" というタグを設定している際には、"./story01.novel.txt" というファイルや、"./novel.version001.txt"などで適応されます。
+一方で、"story001.novel01.txt"などのテキストには適応されません。
+正規表現化するのは今後の課題といたします。
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**

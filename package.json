@@ -3,7 +3,7 @@
   	"name": "japanese-novel-editor",
 	"displayName": "Japanese-novel-editor",
 	"description": "日本語で小説を書く。それもvscodeで。",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -20,9 +20,14 @@
 		"configuration":{
 			"title": "Japanese_Novel_Editor",
 			"properties": {
+				"wordCounter.isUseWordCount":{
+					"type": "boolean",
+					"description": "日本語ファイルを前提としているため、基本的にモードを変えても単語数カウントは適応されない。一方で、この変数をtrueにした場合は、単語数カウントモードが追加される。",
+					"default": false
+				},
 				"filenameConfig.tag":{
 					"type": "string",
-					"description": "このタグがついたファイルに適応される. \n もし'*'の場合前ファイルに適応される. \n 例) タグが 'novel' の場合 './filename.novel' や 'filename.novel.txt' というファイル名に反応する. ",
+					"description": "このタグがついたファイルに適応される。\n もし'*'の場合前ファイルに適応される。\n 例) タグが 'novel' の場合 './filename.novel' や 'filename.novel.txt' というファイル名に反応する。",
 					"default": "novel"
 				}
 			}

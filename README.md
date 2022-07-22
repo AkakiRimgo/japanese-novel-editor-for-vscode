@@ -36,6 +36,7 @@ There is nothing in particular at this point, but if I had to say, it looks like
 
 この拡張には現在以下の設定値があります：
 
+* `word Counter: isUseWordCount`: 単語数を数えるモードを使えるようにするか選択できます。チェックがついていると使えます。始めは使えないように設定してあります。
 * `filename Config: tag`: ファイル名で選別する際のタグの名前を設定できます。始めの値はnovelです。
 
 ## これからすること

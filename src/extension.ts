@@ -1,9 +1,20 @@
 import * as vscode from 'vscode';
 import {window, workspace, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 
-// setting Module
-const FILENAME_CONFIG = vscode.workspace.getConfiguration('filenameConfig');
-const TAG = FILENAME_CONFIG.get<string>('tag') || "novel";
+function getConfig():[string, boolean]{
+    // setting Module
+    const FILENAME_CONFIG = vscode.workspace.getConfiguration('filenameConfig');
+    const TAG = FILENAME_CONFIG.get<string>('tag') || "novel";
+
+    const WORDCOUNTER_CONFIG = vscode.workspace.getConfiguration('wordCounter');
+    const IS_USE_WORD_COUNT = WORDCOUNTER_CONFIG.get<boolean>('isUseWordCount') || false;
+    return [TAG, IS_USE_WORD_COUNT];
+}
+
+let [TAG, IS_USE_WORD_COUNT] = getConfig();
+workspace.onDidChangeConfiguration(
+    e => {[TAG, IS_USE_WORD_COUNT] = getConfig();}
+);
 
 // COMMANDS_NAME
 const CO_NA = {
@@ -13,6 +24,7 @@ const CO_NA = {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const Mode = {
+    WC: "WordCount",
 	CC: "CharacterCount",
 	CCNNL: "CharacterCountNoNewLine",
 	CCNS: "CharacterCountNoSpace",
@@ -69,16 +81,19 @@ class WordCounter {
         );
 		// set functions
 		this.mode2newmode= {
+            [Mode.WC]: Mode.CC,
 			[Mode.CC]: Mode.CCNNL,
 			[Mode.CCNNL]: Mode.CCNS,
-			[Mode.CCNS]: Mode.CC
+			[Mode.CCNS]: Mode.WC
 		};
 		this.mode2func = {
+            [Mode.WC]: this._getWordCount,
 			[Mode.CC]: this._getCharacterCount,
 			[Mode.CCNNL]: this._getCharacterCountNoNewLine,
 			[Mode.CCNS]: this._getCharacterCountNoSpace
 		};
 		this.mode2tag = {
+            [Mode.WC]: "単語",
 			[Mode.CC]: "文字",
 			[Mode.CCNNL]: "文字（改行除く）",
 			[Mode.CCNS]: "文字（空白文字除く）"
@@ -106,7 +121,10 @@ class WordCounter {
 	public changeMode() {
 		const oldmode:Mode = this._mode;
 		const newmode:Mode = this.mode2newmode[oldmode];
-		this._mode = newmode;
+        if(newmode===Mode.WC&&(!IS_USE_WORD_COUNT)){
+            console.log("myDEBUG:\t" + "Skip mode 'Word Count'");
+            this._mode = this.mode2newmode[newmode];
+        }else{this._mode = newmode;}
         this.updateWordCount();
         console.log("myDEBUG:\t" + "mode: " + oldmode + " to " + newmode);
 	}

@@ -1,6 +1,7 @@
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
 import {window, workspace, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
+import path = require ("path")
 
 function getConfig():[string, boolean]{
     // setting Module
@@ -38,15 +39,20 @@ const Mode = {
 
 type Mode = typeof Mode[keyof typeof Mode];
 
-function getFileName(path:string){
-	return path.split('/')?.pop()?.split('\\').pop();
+function getFileName(fullPath:string){
+	return fullPath.split('/')?.pop()?.split('\\').pop();
 }
-/*
+
 async function readFile(relativePath:string): Promise<string>{
-    const _uint8array = await workspace.fs.readFile(vscode.Uri.file(relativePath));
-    return (new TextDecoder()).decode(_uint8array);
+    const wsFs = workspace.workspaceFolders;
+    if(wsFs && wsFs.length===1){
+        const fullPath = path.join(wsFs[0].uri.path, relativePath);
+        console.log(`myDEBUG:\t${fullPath}`);
+        const _uint8array = await workspace.fs.readFile(vscode.Uri.file(fullPath));
+        return (new TextDecoder()).decode(_uint8array);
+    }
+    else{return `${wsFs}`;}
 }
-*/
 
 export function activate(context: vscode.ExtensionContext) {
     // start command
@@ -64,10 +70,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(wordCounter);
 
     // create DebugClass
-    /*
     const classForDebug = new DebugClass(context);
     context.subscriptions.push(classForDebug);
-    */
 }
 
 function newStatusBarItem(
@@ -240,9 +244,10 @@ class DebugClass {
         this.context = context;
         this._statusBarItem = newStatusBarItem(
             CO_NA_DEBUG.d1, () => { this._onEvent();}, 
-            StatusBarAlignment.Right
+            StatusBarAlignment.Left
         );
         this._statusBarItem.text = "debugButton";
+        this._statusBarItem.show();
 
         // subscribe to selection change and editor activation events
         const subscriptions: Disposable[] = [];
@@ -254,12 +259,10 @@ class DebugClass {
     }
 
     public _onEvent(){
-        /*
         readFile("./readTestFile.txt").then((value)=>{
-            console.log("myDebug:\tfile\n");
-            console.log("\t"+value.replace("\n", "\n\t"));
+            console.log("myDEBUG:\tfile\n");
+            console.log("myDEBUG\n\t"+value.replace(/\n/g, "\n\t"));
         }).catch((reason)=>{console.log(`myDEBUG:\terror: ${reason}`);});
-        */
     }
 
     public dispose() {

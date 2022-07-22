@@ -1,3 +1,4 @@
+import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
 import {window, workspace, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 
@@ -22,6 +23,11 @@ const CO_NA = {
     Start: "japanese-novel-editor.starn-novel-mode"
 } as const; 
 
+// COMMANDS_NAME_DEBUG
+const CO_NA_DEBUG = {
+    d1: "japanese-novel-editor.debug-command-01"
+} as const; 
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const Mode = {
     WC: "WordCount",
@@ -35,10 +41,16 @@ type Mode = typeof Mode[keyof typeof Mode];
 function getFileName(path:string){
 	return path.split('/')?.pop()?.split('\\').pop();
 }
+/*
+async function readFile(relativePath:string): Promise<string>{
+    const _uint8array = await workspace.fs.readFile(vscode.Uri.file(relativePath));
+    return (new TextDecoder()).decode(_uint8array);
+}
+*/
 
 export function activate(context: vscode.ExtensionContext) {
     // start command
-    const startCommand = vscode.commands.registerCommand(CO_NA.Start, () => {})
+    const startCommand = vscode.commands.registerCommand(CO_NA.Start, () => {});
     context.subscriptions.push(startCommand);
 
     // create a new word counter
@@ -50,6 +62,12 @@ export function activate(context: vscode.ExtensionContext) {
 	// add
 	context.subscriptions.push(controller);
 	context.subscriptions.push(wordCounter);
+
+    // create DebugClass
+    /*
+    const classForDebug = new DebugClass(context);
+    context.subscriptions.push(classForDebug);
+    */
 }
 
 function newStatusBarItem(
@@ -209,6 +227,43 @@ class WordCounterController {
     }
 
     public dispose() {
+        this._disposable.dispose();
+    }
+}
+
+class DebugClass {
+    private context: vscode.ExtensionContext;
+    private _disposable: Disposable;
+    private _statusBarItem: StatusBarItem;
+
+    constructor(context: vscode.ExtensionContext) {
+        this.context = context;
+        this._statusBarItem = newStatusBarItem(
+            CO_NA_DEBUG.d1, () => { this._onEvent();}, 
+            StatusBarAlignment.Right
+        );
+        this._statusBarItem.text = "debugButton";
+
+        // subscribe to selection change and editor activation events
+        const subscriptions: Disposable[] = [];
+
+        // create a combined disposable from both event subscriptions
+        this._disposable = Disposable.from(...subscriptions);
+
+        this._onEvent();
+    }
+
+    public _onEvent(){
+        /*
+        readFile("./readTestFile.txt").then((value)=>{
+            console.log("myDebug:\tfile\n");
+            console.log("\t"+value.replace("\n", "\n\t"));
+        }).catch((reason)=>{console.log(`myDEBUG:\terror: ${reason}`);});
+        */
+    }
+
+    public dispose() {
+        this._statusBarItem.dispose();
         this._disposable.dispose();
     }
 }

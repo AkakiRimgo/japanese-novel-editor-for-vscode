@@ -1,7 +1,9 @@
 import { TextDecoder } from 'util';
 import * as vscode from 'vscode';
 import {window, workspace, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
-import path = require ("path")
+import path = require ("path");
+
+import {ReadSetting} from "./readSetting";
 
 function getConfig():[string, boolean]{
     // setting Module
@@ -239,6 +241,7 @@ class DebugClass {
     private context: vscode.ExtensionContext;
     private _disposable: Disposable;
     private _statusBarItem: StatusBarItem;
+    private _readSetting: ReadSetting;
 
     constructor(context: vscode.ExtensionContext) {
         this.context = context;
@@ -248,21 +251,16 @@ class DebugClass {
         );
         this._statusBarItem.text = "debugButton";
         this._statusBarItem.show();
-
         // subscribe to selection change and editor activation events
         const subscriptions: Disposable[] = [];
-
         // create a combined disposable from both event subscriptions
         this._disposable = Disposable.from(...subscriptions);
 
-        this._onEvent();
+        this._readSetting = new ReadSetting();
     }
 
     public _onEvent(){
-        readFile("./readTestFile.txt").then((value)=>{
-            console.log("myDEBUG:\tfile\n");
-            console.log("myDEBUG\n\t"+value.replace(/\n/g, "\n\t"));
-        }).catch((reason)=>{console.log(`myDEBUG:\terror: ${reason}`);});
+        this._readSetting._onEvent();
     }
 
     public dispose() {
